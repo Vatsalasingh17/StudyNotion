@@ -5,90 +5,115 @@ import IconBtn from '../../common/IconBtn'
 
 const MyProfile = () => {
 
-    const {user} = useSelector((state) => state.profile)
+    // Access user data from Redux store (state.profile)
+    const { user } = useSelector((state) => state.profile);
+
+    // Hook for programmatic navigation
     const navigate = useNavigate();
-  return (
-    <div className='text-white'>
 
-        <h1>
-            My Profile
-        </h1>
-        
-        {/* section 1 */}
-        <div>
-            <div>
-                <img 
-                src={user?.image}
-                alt={`profile-${user?.firstName}`}
-                className='aspect-square w-[78px] rounded-full object-cover' />
-                <div>
-                    <p> {user?.firstName + " " + user?.lastName} </p>
-                    <p> {user?.email}</p>
+    return (
+        <div className='text-white'>
+            
+            {/* Page Heading */}
+            <h1>My Profile</h1>
+
+            {/* ----------------------------- */}
+            {/* Section 1: Profile Image & Basic Info */}
+            {/* ----------------------------- */}
+            <div className='flex justify-between items-center'>
+                
+                {/* User Avatar and Basic Info */}
+                <div className='flex items-center gap-4'>
+                    <img 
+                        src={user?.image} // User profile image
+                        alt={`profile-${user?.firstName}`} // Accessible alt text
+                        className='aspect-square w-[78px] rounded-full object-cover' 
+                    />
+                    
+                    {/* Display user's name and email */}
+                    <div>
+                        <p>{user?.firstName + " " + user?.lastName}</p>
+                        <p>{user?.email}</p>
+                    </div>
                 </div>
-            </div>
-            <IconBtn
-                text="Edit"
-                onclick={() => {
-                    navigate("/dashboard/settings")
-                }} >
 
-            </IconBtn>
-        </div>
-
-        {/* section 2 */}
-        <div>
-            <div>
-                <p>About</p>
+                {/* Edit Button to navigate to settings */}
                 <IconBtn
-                text="Edit"
-                onclick={() => {
-                    navigate("/dashboard/settings")
-                }} />
+                    text="Edit"
+                    onclick={() => navigate("/dashboard/settings")}
+                />
             </div>
-            <p> {user?.additionalDetails?.about  ??  "Write Something about Yourself"}</p>
-        </div>
 
-        {/* section 3 */}
-        <div>
-            <div>
-                <p>Personal Details</p>
-                <IconBtn
-                text="Edit"
-                onclick={() => {
-                    navigate("/dashboard/settings")
-                }} />
-            </div>
-            <div>
-                <div>
-                    <p>First Name</p>
-                    <p>{user?.firstName}</p>
-                </div>
-                <div>
-                    <p>Email</p>
-                    <p>{user?.email}</p>
-                </div>
-                <div>
-                    <p>Gender</p>
-                    <p>{user?.additionalDetails?.gender ?? "Add Gender"}</p>
-                </div>
-                <div>
-                    <p>Last Name</p>
-                    <p>{user?.lastName}</p>
-                </div>
-                <div>
-                    <p>Phone Number</p>
-                    <p>{user?.additionalDetails?.contactNumber ?? "Add Contact Number"}</p>
-                </div>
-                <div>
-                    <p>Date of Birth</p>
-                    <p>{user?.additionalDetails?.dateOfBirth ?? "Add Date of Birth"}</p>
-                </div>
-            </div>
-        </div>
+            {/* ----------------------------- */}
+            {/* Section 2: About Section */}
+            {/* ----------------------------- */}
+            <div className='mt-6'>
+                <div className='flex justify-between items-center'>
+                    <p>About</p>
 
-      
-    </div>
-  )
+                    {/* Edit About Info Button */}
+                    <IconBtn
+                        text="Edit"
+                        onclick={() => navigate("/dashboard/settings")}
+                    />
+                </div>
+
+                {/* Show About text or fallback message */}
+                <p>{user?.additionalDetails?.about ?? "Write Something about Yourself"}</p>
+            </div>
+
+            {/* ----------------------------- */}
+            {/* Section 3: Personal Details */}
+            {/* ----------------------------- */}
+            <div className='mt-6'>
+                <div className='flex justify-between items-center'>
+                    <p>Personal Details</p>
+
+                    {/* Edit Personal Details Button */}
+                    <IconBtn
+                        text="Edit"
+                        onclick={() => navigate("/dashboard/settings")}
+                    />
+                </div>
+
+                {/* User Info Grid */}
+                <div className='grid grid-cols-2 gap-4 mt-3'>
+                    
+                    {/* Individual Detail Fields */}
+                    <div>
+                        <p>First Name</p>
+                        <p>{user?.firstName}</p>
+                    </div>
+
+                    <div>
+                        <p>Email</p>
+                        <p>{user?.email}</p>
+                    </div>
+
+                    <div>
+                        <p>Gender</p>
+                        <p>{user?.additionalDetails?.gender ?? "Add Gender"}</p>
+                    </div>
+
+                    <div>
+                        <p>Last Name</p>
+                        <p>{user?.lastName}</p>
+                    </div>
+
+                    <div>
+                        <p>Phone Number</p>
+                        <p>{user?.additionalDetails?.contactNumber ?? "Add Contact Number"}</p>
+                    </div>
+
+                    <div>
+                        <p>Date of Birth</p>
+                        <p>{user?.additionalDetails?.dateOfBirth ?? "Add Date of Birth"}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    )
 }
 
 export default MyProfile
