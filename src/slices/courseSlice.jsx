@@ -1,42 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
+// Define the initial state for authentication
+// It checks if there's a "token" in localStorage and loads it; otherwise, it's set to null
 const initialState = {
-  step: 1,
-  course: null,
-  editCourse: false,
-  paymentLoading: false,
-}
+    token: localStorage.getItem("token") 
+        ? JSON.parse(localStorage.getItem("token")) 
+        : null,
+};
 
-const courseSlice = createSlice({
-  name: "course",
-  initialState,
-  reducers: {
-    setStep: (state, action) => {
-      state.step = action.payload
-    },
-    setCourse: (state, action) => {
-      state.course = action.payload
-    },
-    setEditCourse: (state, action) => {
-      state.editCourse = action.payload
-    },
-    setPaymentLoading: (state, action) => {
-      state.paymentLoading = action.payload
-    },
-    resetCourseState: (state) => {
-      state.step = 1
-      state.course = null
-      state.editCourse = false
-    },
-  },
-})
+// Create a Redux slice for authentication
+const authSlice = createSlice({
+    name: "auth", // Slice name (used internally by Redux)
+    initialState: initialState, // The initial state defined above
 
-export const {
-  setStep,
-  setCourse,
-  setEditCourse,
-  setPaymentLoading,
-  resetCourseState,
-} = courseSlice.actions
+    // Reducers define how the state changes in response to actions
+    reducers: {
+        // Action to set the authentication token
+        // The payload contains the new token value
+        setToken(state, value) {
+            state.token = value.payload;
 
-export default courseSlice.reducer
+            // (Optional good practice)
+            // Also update localStorage so the token persists across page reloads
+            // localStorage.setItem("token", JSON.stringify(value.payload));
+        },
+    },
+});
+
+// Export the action creator for setting a token
+export const { setToken } = authSlice.actions;
+
+// Export the reducer to be included in the Redux store
+export default authSlice.reducer;
