@@ -10,12 +10,13 @@ import { ACCOUNT_TYPE } from "../../../utils/constants"
 import Tab from "../../common/Tab"
 
 function SignupForm() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate() // React Router hook for navigation
+  const dispatch = useDispatch() // Redux hook for dispatching actions
 
-  // student or instructor
+  // Account type state (either Student or Instructor)
   const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
 
+  // Form data for user input fields
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -24,39 +25,44 @@ function SignupForm() {
     confirmPassword: "",
   })
 
+  // State for password visibility toggles
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
+  // Destructure fields for easier access
   const { firstName, lastName, email, password, confirmPassword } = formData
 
-  // Handle input fields, when some value changes
+  // Handle change for all input fields
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value, // Dynamically updates the correct field
     }))
   }
 
-  // Handle Form Submission
+  // Handle form submission
   const handleOnSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault() // Prevent form reload
 
+    // Validate password and confirm password
     if (password !== confirmPassword) {
       toast.error("Passwords Do Not Match")
       return
     }
+
+    // Combine all signup data, including account type
     const signupData = {
       ...formData,
       accountType,
     }
 
-    // Setting signup data to state
-    // To be used after otp verification
+    // Save signup data in Redux to use after OTP verification
     dispatch(setSignupData(signupData))
-    // Send OTP to user for verification
+
+    // Send OTP to user's email for verification
     dispatch(sendOtp(formData.email, navigate))
 
-    // Reset
+    // Reset form fields after submission
     setFormData({
       firstName: "",
       lastName: "",
@@ -64,10 +70,10 @@ function SignupForm() {
       password: "",
       confirmPassword: "",
     })
-    setAccountType(ACCOUNT_TYPE.STUDENT)
+    setAccountType(ACCOUNT_TYPE.STUDENT) // Reset account type to default
   }
 
-  // data to pass to Tab component
+  // Data passed to the <Tab /> component for switching account type
   const tabData = [
     {
       id: 1,
@@ -83,10 +89,12 @@ function SignupForm() {
 
   return (
     <div>
-      {/* Tab */}
+      {/* Account type selector using Tab component */}
       <Tab tabData={tabData} field={accountType} setField={setAccountType} />
-      {/* Form */}
+
+      {/* Signup Form */}
       <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-4">
+        {/* First and Last Name Fields */}
         <div className="flex gap-x-4">
           <label>
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
@@ -105,6 +113,7 @@ function SignupForm() {
               className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
             />
           </label>
+
           <label>
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
               Last Name <sup className="text-pink-200">*</sup>
@@ -123,6 +132,8 @@ function SignupForm() {
             />
           </label>
         </div>
+
+        {/* Email Address Field */}
         <label className="w-full">
           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
             Email Address <sup className="text-pink-200">*</sup>
@@ -140,14 +151,17 @@ function SignupForm() {
             className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
           />
         </label>
+
+        {/* Password and Confirm Password Fields */}
         <div className="flex gap-x-4">
+          {/* Password Field */}
           <label className="relative">
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
               Create Password <sup className="text-pink-200">*</sup>
             </p>
             <input
               required
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? "text" : "password"} // Toggle visibility
               name="password"
               value={password}
               onChange={handleOnChange}
@@ -157,6 +171,7 @@ function SignupForm() {
               }}
               className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-5"
             />
+            {/* Password visibility toggle icon */}
             <span
               onClick={() => setShowPassword((prev) => !prev)}
               className="absolute right-3 top-[38px] z-[10] cursor-pointer"
@@ -168,13 +183,15 @@ function SignupForm() {
               )}
             </span>
           </label>
+
+          {/* Confirm Password Field */}
           <label className="relative">
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
               Confirm Password <sup className="text-pink-200">*</sup>
             </p>
             <input
               required
-              type={showConfirmPassword ? "text" : "password"}
+              type={showConfirmPassword ? "text" : "password"} // Toggle visibility
               name="confirmPassword"
               value={confirmPassword}
               onChange={handleOnChange}
@@ -184,6 +201,7 @@ function SignupForm() {
               }}
               className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-5"
             />
+            {/* Confirm password visibility toggle icon */}
             <span
               onClick={() => setShowConfirmPassword((prev) => !prev)}
               className="absolute right-3 top-[38px] z-[10] cursor-pointer"
@@ -196,6 +214,8 @@ function SignupForm() {
             </span>
           </label>
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
