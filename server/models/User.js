@@ -1,68 +1,88 @@
-const mongoose=require("mongoose");
+// Import the mongoose library to define and interact with MongoDB schemas
+const mongoose = require("mongoose");
+
+// Import resetPasswordToken (though not typically needed directly inside a schema file)
+// This import might be unnecessary unless you're using it within this file.
 const { resetPasswordToken } = require("../controllers/ResetPassword");
 
-const userSchema=new mongoose.Schema(
+// Define the schema for the "User" collection
+const userSchema = new mongoose.Schema(
     {
-        firstName:
-        {
-            type:String,
-            required:true,
-            trim:true,
-        },
-        lastName:
-        {
-            type:String,
-            required:true,
-            trim:true,
-        },
-        email:
-        {
-            type:String,
-            required:true,
-            trim:true,
-        },
-        password:
-        {
-            type:String,
-            required:true,
-        },
-        accountTypes:
-        {
-           type:String,
-           required:true,
-        },
-        additionalDetails:
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            required:true,
-            ref:"Profile"
-        },
-        courses:
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Course"
+        // User's first name
+        firstName: {
+            type: String,
+            required: true,    // This field is mandatory
+            trim: true,        // Removes whitespace from both ends of the string
         },
 
-        image:
-        {
-            type:String,
-            required:true,
+        // User's last name
+        lastName: {
+            type: String,
+            required: true,
+            trim: true,
         },
-        token:
-        {
-            type:String,
-            required:true,
+
+        // User's unique email address (typically used for login)
+        email: {
+            type: String,
+            required: true,
+            trim: true,
+            // 💡 You may also want to add "unique: true" for enforcing unique emails
         },
-        resetPasswordExpires:
-        {
-            type:String
+
+        // Hashed password for authentication
+        password: {
+            type: String,
+            required: true,
         },
-        courseProgress:
-        [{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"CourseProgress",
-        }],
+
+        // Type of user account — e.g., "Student", "Instructor", or "Admin"
+        accountTypes: {
+            type: String,
+            required: true,
+        },
+
+        // Reference to the user's detailed profile information (stored in another collection)
+        additionalDetails: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: "Profile",    // Links to the "Profile" model
+        },
+
+        // Reference to the courses the user is enrolled in or teaches
+        // ⚠️ Currently supports only one course. Use an array if multiple courses are needed.
+        courses: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Course",     // Links to the "Course" model
+        },
+
+        // URL or path of the user's profile image
+        image: {
+            type: String,
+            required: true,
+        },
+
+        // Token used for account verification, session, or password reset
+        token: {
+            type: String,
+            required: true,
+        },
+
+        // Expiration time for reset password token
+        resetPasswordExpires: {
+            type: String,      // 💡 Ideally should be a Date type for accurate expiration tracking
+        },
+
+        // Tracks user's progress in various courses
+        // Each entry references a document in the "CourseProgress" collection
+        courseProgress: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "CourseProgress",
+            },
+        ],
     }
 );
 
-module.exports=mongoose.model("User",userSchema);
+// Export the model so it can be used elsewhere in the project
+module.exports = mongoose.model("User", userSchema);
