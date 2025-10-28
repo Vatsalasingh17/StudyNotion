@@ -1,3 +1,4 @@
+// Function to generate an HTML email template confirming password update
 exports.passwordUpdated = (email, name) => {
 	return `<!DOCTYPE html>
     <html>
@@ -5,7 +6,9 @@ exports.passwordUpdated = (email, name) => {
     <head>
         <meta charset="UTF-8">
         <title>Password Update Confirmation</title>
+
         <style>
+            /* ===== Global Styles ===== */
             body {
                 background-color: #ffffff;
                 font-family: Arial, sans-serif;
@@ -15,37 +18,42 @@ exports.passwordUpdated = (email, name) => {
                 margin: 0;
                 padding: 0;
             }
-    
-    
+
+            /* ===== Main Container ===== */
             .container {
                 max-width: 600px;
                 margin: 0 auto;
                 padding: 20px;
                 text-align: center;
             }
-    
+
+            /* ===== Logo Styling ===== */
             .logo {
                 max-width: 200px;
                 margin-bottom: 20px;
             }
-    
+
+            /* ===== Header Message ===== */
             .message {
                 font-size: 18px;
                 font-weight: bold;
                 margin-bottom: 20px;
             }
-    
+
+            /* ===== Body Text ===== */
             .body {
                 font-size: 16px;
                 margin-bottom: 20px;
             }
-    
+
+            /* ===== Support/Contact Section ===== */
             .support {
                 font-size: 14px;
                 color: #999999;
                 margin-top: 20px;
             }
-    
+
+            /* ===== Highlighted Text (e.g., email address) ===== */
             .highlight {
                 font-weight: bold;
             }
@@ -55,18 +63,32 @@ exports.passwordUpdated = (email, name) => {
     
     <body>
         <div class="container">
-            <a href="https://studynotion-edtech-project.vercel.app"><img class="logo"
-                    src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo"></a>
+            <!-- ===== Logo Section linking back to the StudyNotion homepage ===== -->
+            <a href="https://studynotion-edtech-project.vercel.app">
+                <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo">
+            </a>
+
+            <!-- ===== Main Message/Header ===== -->
             <div class="message">Password Update Confirmation</div>
+
+            <!-- ===== Email Body Content ===== -->
             <div class="body">
                 <p>Hey ${name},</p>
-                <p>Your password has been successfully updated for the email <span class="highlight">${email}</span>.
+                <p>
+                    Your password has been successfully updated for the email 
+                    <span class="highlight">${email}</span>.
                 </p>
-                <p>If you did not request this password change, please contact us immediately to secure your account.</p>
+                <p>
+                    If you did not request this password change, please contact us immediately 
+                    to secure your account.
+                </p>
             </div>
-            <div class="support">If you have any questions or need further assistance, please feel free to reach out to us
-                at
-                <a href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!
+
+            <!-- ===== Support Information ===== -->
+            <div class="support">
+                If you have any questions or need further assistance, please feel free to reach out to us at
+                <a href="mailto:info@studynotion.com">info@studynotion.com</a>. 
+                We are here to help!
             </div>
         </div>
     </body>
